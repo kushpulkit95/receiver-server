@@ -14,16 +14,14 @@ import com.pk.receiver.FlatFileWriter;
  * - Listen for incoming TCP connections on a specific port.
  * - Accept a client connection.
  * - Receive text data sent by the client.
- * - Display the received message (temporary).
+ * - Write the received message in a flat file.
  *
  * Current Implementation:
  * Simulator (Client) ----TCP----> TcpServer (Receiver)
  *
- * In later stages, instead of printing the received message,
- * the server will write the received CDR/NAT records into a file.
  */
 
-public class TcpServer {
+public class TcpServer implements Server{
 
     public void start(){ //named it "start()" because it will start the server
 
@@ -33,7 +31,7 @@ public class TcpServer {
             ServerSocket server = new ServerSocket(5000);
             //Creates TCP server that listens for incoming connections on port 5000
         ){
-            System.out.println("Server listening on port 5000...");
+            System.out.println("TCP Server listening on port 5000...");
             
             while(true){
                 try(
