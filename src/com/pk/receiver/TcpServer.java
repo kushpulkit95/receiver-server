@@ -1,6 +1,7 @@
 package com.pk.receiver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,16 +22,22 @@ import com.pk.receiver.FlatFileWriter;
  *
  */
 
-public class TcpServer implements Server{
+public class TcpServer{
 
     public void start(){ //named it "start()" because it will start the server
 
+     //A shutdown hook is a small piece of code the JVM executes while it's shutting down.
+        File file = new File("..\\output\\received-cdr.csv");
+        boolean newFile = !file.exists();
         try (
-            FlatFileWriter fileWriter = new FlatFileWriter("..\\output\\received-records.txt");
+            FlatFileWriter fileWriter = new FlatFileWriter(file);
             //Creates file
             ServerSocket server = new ServerSocket(5000);
             //Creates TCP server that listens for incoming connections on port 5000
         ){
+            if(newFile){
+                fileWriter.write("IMSI,MSISDN,IMEI,APN,RATType,Action,Timestamp");
+            }
             System.out.println("TCP Server listening on port 5000...");
             
             while(true){

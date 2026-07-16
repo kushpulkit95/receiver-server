@@ -1,12 +1,13 @@
 package com.pk.receiver;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 import com.pk.receiver.FlatFileWriter;
 
-public class UdpServer implements Server{
+public class UdpServer{
     
     private int receivedCount = 0;
 
@@ -25,13 +26,18 @@ public class UdpServer implements Server{
 
             })
         );
+        File file = new File("..\\output\\received-nat.csv");
+        boolean newFile = !file.exists();
         try( 
-            FlatFileWriter fileWriter = new FlatFileWriter("..\\output\\received-records.txt");
+            FlatFileWriter fileWriter = new FlatFileWriter(file);
             //Creates file
-            DatagramSocket socket = new DatagramSocket(5000);
+            DatagramSocket socket = new DatagramSocket(5001);
             //means "i am waiting for UDP packets at port 5000"
         ){ 
-            System.out.println("UDP server listening on port 5000...");
+            if(newFile){
+                fileWriter.write("Private_IP,Private_Port,Public_IP,Public_Port,Destination_IP,Destination_Port,Protocol,Timestamp");
+            }
+            System.out.println("UDP server listening on port 5001...");
             while(true){
                 byte[] buffer = new byte[4096]; //simply because we need space for message, 4096 is safe spot for sim
 
