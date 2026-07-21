@@ -1,4 +1,4 @@
-package com.pk.receiver;
+package com.pk.receiver_server;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 
-import com.pk.receiver.FlatFileWriter;
+import com.pk.receiver_server.FlatFileWriter;
 /*
  * TcpServer is the receiving side of the simulator.
  *

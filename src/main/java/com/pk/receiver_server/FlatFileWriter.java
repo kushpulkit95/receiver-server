@@ -1,4 +1,4 @@
-package com.pk.receiver;
+package com.pk.receiver_server;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;

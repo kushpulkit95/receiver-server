@@ -1,11 +1,9 @@
-package com.pk.receiver;
+package com.pk.receiver_server;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-
-import com.pk.receiver.FlatFileWriter;
 
 public class UdpServer{
     

@@ -23,6 +23,7 @@ The receiver supports both **TCP** and **UDP** communication, writes all receive
 ## Tech Stack
 
 - Java 21
+- Spring Boot 4.1
 - TCP Socket Programming
 - UDP Socket Programming
 - Java File I/O
@@ -34,7 +35,6 @@ The receiver supports both **TCP** and **UDP** communication, writes all receive
 ```text
 src
 ├── ReceiverApplication.java
-├── Server.java
 ├── TcpServer.java
 ├── UdpServer.java
 └── FlatFileWriter.java
@@ -58,5 +58,4 @@ This project was built to gain hands-on experience with:
 - UDP server development
 - Java Socket Programming
 - Flat file handling
-- Interface-based design
 - Long-running server applications
