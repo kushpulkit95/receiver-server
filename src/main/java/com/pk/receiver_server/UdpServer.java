@@ -1,7 +1,6 @@
 package com.pk.receiver_server;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
@@ -51,7 +50,7 @@ public class UdpServer{
 
                 fileWriter.write(message);
             }
-        } catch(IOException e){
+        } catch(Exception e){
             e.printStackTrace();
         }
     }

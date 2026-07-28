@@ -1,7 +1,6 @@
 package com.pk.receiver_server;
 
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

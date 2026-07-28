@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.IOException;
-
-import com.pk.receiver_server.FlatFileWriter;
 /*
  * TcpServer is the receiving side of the simulator.
  *
