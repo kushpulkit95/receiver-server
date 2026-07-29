@@ -29,7 +29,7 @@ public class UdpServer{
             FlatFileWriter fileWriter = new FlatFileWriter(file);
             //Creates file
             DatagramSocket socket = new DatagramSocket(5001);
-            //means "i am waiting for UDP packets at port 5000"
+            //means "i am waiting for UDP packets at port 5001"
         ){ 
             if(newFile){
                 fileWriter.write("Private_IP,Private_Port,Public_IP,Public_Port,Destination_IP,Destination_Port,Protocol,Timestamp");
