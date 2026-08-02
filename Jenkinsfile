@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        stage('Print PAT - REMOVE AFTER DEBUG') {
+        stage('Test Credentials') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -36,8 +36,17 @@ pipeline {
                     )
                 ]) {
                     powershell '''
-                    Write-Host "USER: [$env:DOCKER_USER]"
-                    Write-Host "PASS: [$env:DOCKER_PASS]"
+                    Write-Host "Username from Jenkins:"
+                    Write-Host $env:DOCKER_USER
+                    whoami
+
+                    Write-Host "Password length:"
+                    Write-Host $env:DOCKER_PASS.Length
+                    $env:USERPROFILE
+
+                    docker context ls
+
+                    docker version
                     '''
                 }
             }
