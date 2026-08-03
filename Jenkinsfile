@@ -50,7 +50,7 @@ pipeline {
                     type "%DOCKER_CONFIG%\\config.json"
 
                     echo === Attempting push ===
-                    docker push "%IMAGE_NAME%:%BUILD_NUMBER%"
+                    docker push "%IMAGE_NAME%:latest"
                     echo === Push exit code: %ERRORLEVEL% ===
                     '''
                 }
