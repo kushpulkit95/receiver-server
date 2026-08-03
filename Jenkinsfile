@@ -25,34 +25,11 @@ pipeline {
                 bat 'docker tag %IMAGE_NAME%:%BUILD_NUMBER% %IMAGE_NAME%:latest'
             }
         }
-
-        stage('Test Credentials') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-creds',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_PASS'
-                    )
-                ]) {
-                    powershell '''
-                    Write-Host "Username from Jenkins:"
-                    Write-Host $env:DOCKER_USER
-                    whoami
-
-                    Write-Host "Password length:"
-                    Write-Host $env:DOCKER_PASS.Length
-                    $env:USERPROFILE
-
-                    docker context ls
-
-                    docker version
-                    '''
-                }
-            }
-        }
         
         stage('Push Docker Image') {
+            environment {
+                DOCKER_CONFIG = "${WORKSPACE}\\.docker"
+            }
             steps {
                 withCredentials([
                     usernamePassword(
@@ -61,14 +38,20 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    powershell '''
-                    $pass = $env:DOCKER_PASS
-                    $pass | docker login -u $env:DOCKER_USER --password-stdin
+                    bat '''
+                    echo === DOCKER_CONFIG is: %DOCKER_CONFIG% ===
+                    if not exist "%DOCKER_CONFIG%" mkdir "%DOCKER_CONFIG%"
 
-                    docker push "${env:IMAGE_NAME}:${env:BUILD_NUMBER}"
-                    docker push "${env:IMAGE_NAME}:latest"
+                    echo === Attempting login ===
+                    echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin
+                    echo === Login exit code: %ERRORLEVEL% ===
 
-                    docker logout
+                    echo === Contents of config.json ===
+                    type "%DOCKER_CONFIG%\\config.json"
+
+                    echo === Attempting push ===
+                    docker push "%IMAGE_NAME%:%BUILD_NUMBER%"
+                    echo === Push exit code: %ERRORLEVEL% ===
                     '''
                 }
             }
