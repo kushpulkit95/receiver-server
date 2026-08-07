@@ -18,13 +18,16 @@ import java.net.Socket;
  * Simulator (Client) ----TCP----> TcpServer (Receiver)
  *
  */
+ import java.nio.file.Path;
+ import java.nio.file.Paths;
 
 public class TcpServer{
 
     public void start(){ //named it "start()" because it will start the server
 
      //A shutdown hook is a small piece of code the JVM executes while it's shutting down.
-        File file = new File("..\\output\\received-cdr.csv");
+        Path path = Paths.get("..", "output", "received-cdr.csv");
+        File file = path.toFile();
         boolean newFile = !file.exists();
         try (
             FlatFileWriter fileWriter = new FlatFileWriter(file);

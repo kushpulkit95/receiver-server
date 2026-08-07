@@ -3,6 +3,8 @@ package com.pk.receiver_server;
 import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class UdpServer{
     
@@ -23,7 +25,8 @@ public class UdpServer{
 
             })
         );
-        File file = new File("..\\output\\received-nat.csv");
+        Path path = Paths.get("..", "output", "received-nat.csv");
+        File file = path.toFile();
         boolean newFile = !file.exists();
         try( 
             FlatFileWriter fileWriter = new FlatFileWriter(file);
