@@ -1,6 +1,5 @@
 package com.pk.receiver_server;
 
-import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.nio.file.Files;
