@@ -3,6 +3,7 @@ package com.pk.receiver_server;
 import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -25,11 +26,13 @@ public class UdpServer{
 
             })
         );
-        Path path = Paths.get("..", "output", "received-nat.csv");
-        File file = path.toFile();
-        boolean newFile = !file.exists();
+        try{
+        Path path = Paths.get("..", "output");
+        Files.createDirectories(path);
+        Path file = path.resolve("received-nat.csv");
+        boolean newFile = !(file.toFile()).exists();
         try( 
-            FlatFileWriter fileWriter = new FlatFileWriter(file);
+            FlatFileWriter fileWriter = new FlatFileWriter(file.toFile());
             //Creates file
             DatagramSocket socket = new DatagramSocket(5001);
             //means "i am waiting for UDP packets at port 5001"
@@ -53,6 +56,7 @@ public class UdpServer{
 
                 fileWriter.write(message);
             }
+        }
         } catch(Exception e){
             e.printStackTrace();
         }

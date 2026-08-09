@@ -1,10 +1,13 @@
 package com.pk.receiver_server;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /*
  * TcpServer is the receiving side of the simulator.
  *
@@ -18,19 +21,18 @@ import java.net.Socket;
  * Simulator (Client) ----TCP----> TcpServer (Receiver)
  *
  */
- import java.nio.file.Path;
- import java.nio.file.Paths;
 
 public class TcpServer{
 
     public void start(){ //named it "start()" because it will start the server
 
-     //A shutdown hook is a small piece of code the JVM executes while it's shutting down.
-        Path path = Paths.get("..", "output", "received-cdr.csv");
-        File file = path.toFile();
-        boolean newFile = !file.exists();
+     try{
+        Path path = Paths.get("..", "output");
+        Files.createDirectories(path);
+        Path file = path.resolve("received-cdr.csv");
+        boolean newFile = !(file.toFile()).exists();
         try (
-            FlatFileWriter fileWriter = new FlatFileWriter(file);
+            FlatFileWriter fileWriter = new FlatFileWriter(file.toFile());
             //Creates file
             ServerSocket server = new ServerSocket(5000);
             //Creates TCP server that listens for incoming connections on port 5000
@@ -58,6 +60,7 @@ public class TcpServer{
                 //server.close(); // Stops the server from listening for new connections.
             }
         }
+    }
     } catch (Exception e) {
         e.printStackTrace();
         }
