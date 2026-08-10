@@ -8,6 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * TcpServer is the receiving side of the simulator.
  *
@@ -24,13 +27,20 @@ import java.nio.file.Paths;
 
 public class TcpServer{
 
+    private static final Logger logger =
+            LoggerFactory.getLogger(TcpServer.class);
+
+    private int totalRecordsReceived = 0;
+
     public void start(){ //named it "start()" because it will start the server
 
      try{
+
         Path path = Paths.get("..", "output");
         Files.createDirectories(path);
         Path file = path.resolve("received-cdr.csv");
         boolean newFile = !(file.toFile()).exists();
+
         try (
             FlatFileWriter fileWriter = new FlatFileWriter(file.toFile());
             //Creates file
@@ -40,7 +50,7 @@ public class TcpServer{
             if(newFile){
                 fileWriter.write("IMSI,MSISDN,IMEI,APN,RATType,Action,Timestamp");
             }
-            System.out.println("TCP Server listening on port 5000...");
+            logger.info("TCP Server listening on port 5000...");
             
             while(true){
                 try(
@@ -52,9 +62,25 @@ public class TcpServer{
                             new InputStreamReader( // Converts incoming bytes into readable characters.
                                 socket.getInputStream())); // Gets the stream used to receive data from the connected client.
                 ){
-                String message = reader.readLine(); // Reads one complete line sent by the client.
-                        
-                fileWriter.write(message);
+                int recordsInThisConnection = 0;
+
+                String message; 
+                
+                while((message = reader.readLine()) != null){ // Reads one complete line sent by the client.
+
+                    if(message.isBlank()){
+                        continue;
+                    }
+                    fileWriter.write(message);
+                    recordsInThisConnection++;
+                    totalRecordsReceived++;
+                }
+
+                logger.info(
+                    "TCP: CDR record received | Total: {}",
+                                recordsInThisConnection,
+                                totalRecordsReceived
+                            );
                         
                 //socket.close(); // Closes the connection with this client.
                 //server.close(); // Stops the server from listening for new connections.
@@ -62,7 +88,7 @@ public class TcpServer{
         }
     }
     } catch (Exception e) {
-        e.printStackTrace();
+        logger.error("TCP server stopped due to an error", e);
         }
     }
 }

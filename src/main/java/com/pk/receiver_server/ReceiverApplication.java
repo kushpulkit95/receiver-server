@@ -11,7 +11,10 @@ public class ReceiverApplication {
         TcpServer tcp = new TcpServer();
         UdpServer udp = new UdpServer();
 
-        new Thread(() -> tcp.start()).start();
-        new Thread(() -> udp.start()).start();
+        Thread tcpThread = new Thread(tcp::start, "tcp-server");
+        Thread udpThread = new Thread(udp::start, "udp-server");
+
+        tcpThread.start();
+        udpThread.start();
     }
 }
