@@ -62,8 +62,6 @@ public class TcpServer{
                             new InputStreamReader( // Converts incoming bytes into readable characters.
                                 socket.getInputStream())); // Gets the stream used to receive data from the connected client.
                 ){
-                int recordsInThisConnection = 0;
-
                 String message; 
                 
                 while((message = reader.readLine()) != null){ // Reads one complete line sent by the client.
@@ -72,13 +70,11 @@ public class TcpServer{
                         continue;
                     }
                     fileWriter.write(message);
-                    recordsInThisConnection++;
                     totalRecordsReceived++;
                 }
 
                 logger.info(
                     "TCP: CDR record received | Total: {}",
-                                recordsInThisConnection,
                                 totalRecordsReceived
                             );
                         
